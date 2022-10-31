@@ -1,10 +1,7 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Task</title>
-</head>
-<body>
-<h1>第一個任務</h1>
-</body>
-</html>
+<?= $this->extend("layouts/default") ?>
+
+<?= $this->section("content") ?>
+
+    <h1>這裡是任務</h1>
+
+<?= $this->endSection() ?>
