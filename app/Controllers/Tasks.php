@@ -6,6 +6,6 @@ class Tasks extends BaseController
 {
     public function index()
     {
-        echo view('Tasks/index.php');
+        return view('Tasks/index.php');
     }
 }
