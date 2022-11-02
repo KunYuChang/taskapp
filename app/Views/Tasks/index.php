@@ -1,19 +1,20 @@
 <?= $this->extend("layouts/default") ?>
 
-<?= $this->section("title")?>Tasks<?= $this->endSection() ?>
+<?= $this->section("title") ?>Tasks<?= $this->endSection() ?>
 
 <?= $this->section("content") ?>
 
-    <h1>這裡是任務</h1>
+<h1>這裡是任務</h1>
 
-    <ul>
-        <?php /** @var array $tasks */
-        foreach ($tasks as $task): ?>
-            <li>
-                <?= $task['id'] ?>
+<ul>
+    <?php /** @var array $tasks */
+    foreach ($tasks as $task): ?>
+        <li>
+            <a href="<?= site_url("/tasks/show/" . $task['id']) ?> ">
                 <?= $task['description'] ?>
-            </li>
-        <?php endforeach;?>
-    </ul>
+            </a>
+        </li>
+    <?php endforeach; ?>
+</ul>
 
 <?= $this->endSection() ?>

@@ -5,6 +5,7 @@
 <?= $this->section("content") ?>
 
 <h1>任務</h1>
+<a href="<?= site_url("/tasks")?>">&laquo; 回到首頁</a>
 
 <dl>
     <dt>ID</dt>
