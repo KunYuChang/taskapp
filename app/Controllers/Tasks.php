@@ -24,4 +24,15 @@ class Tasks extends BaseController
     {
         return view('Tasks/new.php');
     }
+ci
+    public function create()
+    {
+        $model = new \App\Models\TaskModel;
+
+        $model->insert([
+            'description' => $this->request->getPost("description")
+        ]);
+
+        dd($model->insertID);
+    }
 }
