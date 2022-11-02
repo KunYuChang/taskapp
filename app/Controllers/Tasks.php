@@ -41,9 +41,14 @@ class Tasks extends BaseController
 
             // CI 會自動建立 session 來傳遞資料
             return redirect()->back()
-                             ->with('errors', $model->errors());
+                             // Set a flash message
+                             ->with('errors', $model->errors())
+                             // Set a flash message
+                             ->with('warning', 'Invalid data');
         } else {
-            return redirect()->to("/tasks/show/$result");
+            return redirect()->to("/tasks/show/$result")
+                             // Set a flash message
+                             ->with('info', 'Task created successfully');
         }
     }
 }
