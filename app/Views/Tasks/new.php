@@ -6,6 +6,15 @@
 
 <h1>新增任務</h1>
 
+<!--error message-->
+<?php if(session()->has('errors')): ?>
+    <ul>
+        <?php foreach (session('errors') as $error): ?>
+            <li><?= $error ?></li>
+        <?php endforeach;?>
+    </ul>
+<?php endif; ?>
+
 <?= form_open("/tasks/create") ?>
 
     <div>

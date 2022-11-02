@@ -29,14 +29,21 @@ class Tasks extends BaseController
     {
         $model = new \App\Models\TaskModel;
 
+        // Inserts data and returns inserted row's primary key on success and false on failure
         $result = $model->insert([
             'description' => $this->request->getPost("description")
-        ]);
+        ],true);
 
         if ($result === false) {
-            dd($model->errors());
+
+            // CI 官方 : 一般來說，使用全局變量是不好的做法。所以$_SESSION不推薦直接使用超全局。
+            // $_SESSION['erros'] = $model->errors();
+
+            // CI 會自動建立 session 來傳遞資料
+            return redirect()->back()
+                             ->with('errors', $model->errors());
         } else {
-            dd($result);
+            return redirect()->to("/tasks/show/$result");
         }
     }
 }
