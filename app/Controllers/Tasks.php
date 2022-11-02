@@ -9,8 +9,14 @@ class Tasks extends BaseController
         $model = new \App\Models\TaskModel;
         $data = $model->findAll();
 
-        dd($data);
+        return view('Tasks/index.php',['tasks'=>$data]);
+    }
 
-        return view('Tasks/index.php', ['tasks' => $data]);
+    public function show($id)
+    {
+        $model = new \App\Models\TaskModel;
+        $task = $model->find($id);
+
+        return view('Tasks/show.php',['task'=>$task]);
     }
 }
