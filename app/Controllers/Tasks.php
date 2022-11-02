@@ -19,4 +19,9 @@ class Tasks extends BaseController
 
         return view('Tasks/show.php',['task'=>$task]);
     }
+
+    public function new()
+    {
+        return view('Tasks/new.php');
+    }
 }
