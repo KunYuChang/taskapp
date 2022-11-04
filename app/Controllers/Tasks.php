@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Controllers;
+E
+use App\Entities\Task;
 
 class Tasks extends BaseController
 {
@@ -22,7 +24,7 @@ class Tasks extends BaseController
 
     public function new()
     {
-        $task = new \App\Entities\Task;
+        $task = new Task;
         return view('Tasks/new.php', [
             'task' => $task
         ]);
@@ -32,13 +34,14 @@ class Tasks extends BaseController
     {
         $model = new \App\Models\TaskModel;
 
-        // Inserts data and returns inserted row's primary key on success and false on failure
-        $result = $model->insert([
-            'description' => $this->request->getPost("description")
-        ], true);
+        $task = new Task($this->request->getPost());
 
-        if ($result === false) {
+        if ($model->insert($task)) {
+            return redirect()->to("/tasks/show/{$model->insertID}")
+                // Set a flash message
+                ->with('info', 'Task created successfully');
 
+        } else {
             // CI 官方 : 一般來說，使用全局變量是不好的做法。所以$_SESSION不推薦直接使用超全局。
             // $_SESSION['erros'] = $model->errors();
 
@@ -49,10 +52,6 @@ class Tasks extends BaseController
                 // Set a flash message
                 ->with('warning', 'Invalid data')
                 ->withInput();
-        } else {
-            return redirect()->to("/tasks/show/$result")
-                // Set a flash message
-                ->with('info', 'Task created successfully');
         }
     }
 
