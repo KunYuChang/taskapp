@@ -44,7 +44,8 @@ class Tasks extends BaseController
                 // Set a flash message
                 ->with('errors', $model->errors())
                 // Set a flash message
-                ->with('warning', 'Invalid data');
+                ->with('warning', 'Invalid data')
+                ->withInput();
         } else {
             return redirect()->to("/tasks/show/$result")
                 // Set a flash message
@@ -64,11 +65,18 @@ class Tasks extends BaseController
     {
         $model = new \App\Models\TaskModel;
 
-        $model->update($id, [
+        $result = $model->update($id, [
             'description' => $this->request->getPost('description')
         ]);
 
-        return redirect()->to("/tasks/show/$id")
-            ->with('info', 'Task updated successfully');
+        if ($result) {
+            return redirect()->to("/tasks/show/$id")
+                ->with('info', 'Task updated successfully');
+        } else {
+           return redirect()->back()
+                            ->with('erros', $model->errors())
+                            ->with('warning', 'Invalid data')
+                            ->withInput();
+        }
     }
 }
