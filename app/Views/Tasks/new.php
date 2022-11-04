@@ -17,10 +17,7 @@
 
 <?= form_open("/tasks/create") ?>
 
-    <div>
-        <label for="description">Description</label>
-        <input type="text" name="description" id="description" value="">
-    </div>
+    <?= $this->include('Tasks/form') ?>>
 
     <button>Save</button>
     <a href="<?= site_url("/tasks")?>">Cancel</a>

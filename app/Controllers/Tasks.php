@@ -22,7 +22,8 @@ class Tasks extends BaseController
 
     public function new()
     {
-        return view('Tasks/new.php');
+        return view('Tasks/new.php',
+            ['task' => ['description' => '']]);
     }
 
     public function create()
@@ -73,10 +74,10 @@ class Tasks extends BaseController
             return redirect()->to("/tasks/show/$id")
                 ->with('info', 'Task updated successfully');
         } else {
-           return redirect()->back()
-                            ->with('erros', $model->errors())
-                            ->with('warning', 'Invalid data')
-                            ->withInput();
+            return redirect()->back()
+                ->with('erros', $model->errors())
+                ->with('warning', 'Invalid data')
+                ->withInput();
         }
     }
 }
