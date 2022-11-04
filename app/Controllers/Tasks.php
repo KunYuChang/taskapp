@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controllers;
-E
+
 use App\Entities\Task;
 
 class Tasks extends BaseController
@@ -67,11 +67,19 @@ class Tasks extends BaseController
     {
         $model = new \App\Models\TaskModel;
 
-        $result = $model->update($id, [
-            'description' => $this->request->getPost('description')
-        ]);
+        // https://codeigniter.com/user_guide/models/entities.html#filling-properties-quickly
+        $task = $model->find($id);
+        $task->fill($this->request->getPost());
 
-        if ($result) {
+        // https://codeigniter.com/user_guide/models/entities.html#checking-for-changed-attributes
+        if (! $task->hasChanged()) {
+            return  redirect()->back()
+                              ->with('warning', 'Nothing to update')
+                              ->withInput();
+        }
+
+        // https://codeigniter.com/user_guide/models/model.html#save
+        if ($model->save($task)) {
             return redirect()->to("/tasks/show/$id")
                 ->with('info', 'Task updated successfully');
         } else {
