@@ -23,6 +23,7 @@
 </div>
 
 <button>Save</button>
+
 <a href="<?= site_url("/tasks/show/".$task['id']) ?>">Cancel</a>
 
 <?= form_close() ?>

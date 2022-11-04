@@ -9,7 +9,7 @@ class Tasks extends BaseController
         $model = new \App\Models\TaskModel;
         $data = $model->findAll();
 
-        return view('Tasks/index.php',['tasks'=>$data]);
+        return view('Tasks/index.php', ['tasks' => $data]);
     }
 
     public function show($id)
@@ -17,7 +17,7 @@ class Tasks extends BaseController
         $model = new \App\Models\TaskModel;
         $task = $model->find($id);
 
-        return view('Tasks/show.php',['task'=>$task]);
+        return view('Tasks/show.php', ['task' => $task]);
     }
 
     public function new()
@@ -32,7 +32,7 @@ class Tasks extends BaseController
         // Inserts data and returns inserted row's primary key on success and false on failure
         $result = $model->insert([
             'description' => $this->request->getPost("description")
-        ],true);
+        ], true);
 
         if ($result === false) {
 
@@ -41,14 +41,14 @@ class Tasks extends BaseController
 
             // CI 會自動建立 session 來傳遞資料
             return redirect()->back()
-                             // Set a flash message
-                             ->with('errors', $model->errors())
-                             // Set a flash message
-                             ->with('warning', 'Invalid data');
+                // Set a flash message
+                ->with('errors', $model->errors())
+                // Set a flash message
+                ->with('warning', 'Invalid data');
         } else {
             return redirect()->to("/tasks/show/$result")
-                             // Set a flash message
-                             ->with('info', 'Task created successfully');
+                // Set a flash message
+                ->with('info', 'Task created successfully');
         }
     }
 
@@ -57,6 +57,18 @@ class Tasks extends BaseController
         $model = new \App\Models\TaskModel;
         $task = $model->find($id);
 
-        return view('Tasks/edit.php',['task'=>$task]);
+        return view('Tasks/edit.php', ['task' => $task]);
+    }
+
+    public function update($id)
+    {
+        $model = new \App\Models\TaskModel;
+
+        $model->update($id, [
+            'description' => $this->request->getPost('description')
+        ]);
+
+        return redirect()->to("/tasks/show/$id")
+            ->with('info', 'Task updated successfully');
     }
 }
