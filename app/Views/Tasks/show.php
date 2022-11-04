@@ -4,7 +4,7 @@
 
 <?= $this->section("content") ?>
 
-<h1>任務</h1>
+<h1>顯示任務</h1>
 <a href="<?= site_url("/tasks")?>">&laquo; 回到首頁</a>
 
 <dl>
@@ -21,5 +21,6 @@
     <dd><?= $task['updated_at'] ?></dd>
 </dl>
 
+<a href="<?= site_url('/tasks/edit/'. $task['id'])?>">Edit</a>
 
 <?= $this->endSection() ?>
