@@ -6,18 +6,24 @@ use App\Entities\Task;
 
 class Tasks extends BaseController
 {
+    private $model;
+
+    public function __construct()
+    {
+        $this->model = new \App\Models\TaskModel;
+    }
+
+
     public function index()
     {
-        $model = new \App\Models\TaskModel;
-        $data = $model->findAll();
+        $data = $this->model->findAll();
 
-        return view('Tasks/index.php', ['tasks' => $data]);
+        return view("Tasks/index", ['tasks' => $data]);
     }
 
     public function show($id)
     {
-        $model = new \App\Models\TaskModel;
-        $task = $model->find($id);
+        $task = $this->model->find($id);
 
         return view('Tasks/show.php', ['task' => $task]);
     }
@@ -32,11 +38,9 @@ class Tasks extends BaseController
 
     public function create()
     {
-        $model = new \App\Models\TaskModel;
-
         $task = new Task($this->request->getPost());
 
-        if ($model->insert($task)) {
+        if ($this->model->insert($task)) {
             return redirect()->to("/tasks/show/{$model->insertID}")
                 // Set a flash message
                 ->with('info', 'Task created successfully');
@@ -57,18 +61,15 @@ class Tasks extends BaseController
 
     public function edit($id)
     {
-        $model = new \App\Models\TaskModel;
-        $task = $model->find($id);
+        $task = $this->model->find($id);
 
         return view('Tasks/edit.php', ['task' => $task]);
     }
 
     public function update($id)
     {
-        $model = new \App\Models\TaskModel;
-
         // https://codeigniter.com/user_guide/models/entities.html#filling-properties-quickly
-        $task = $model->find($id);
+        $task = $this->model->find($id);
         $task->fill($this->request->getPost());
 
         // https://codeigniter.com/user_guide/models/entities.html#checking-for-changed-attributes
@@ -79,12 +80,12 @@ class Tasks extends BaseController
         }
 
         // https://codeigniter.com/user_guide/models/model.html#save
-        if ($model->save($task)) {
+        if ($this->model->save($task)) {
             return redirect()->to("/tasks/show/$id")
                 ->with('info', 'Task updated successfully');
         } else {
             return redirect()->back()
-                ->with('erros', $model->errors())
+                ->with('erros', $this->model->errors())
                 ->with('warning', 'Invalid data')
                 ->withInput();
         }
