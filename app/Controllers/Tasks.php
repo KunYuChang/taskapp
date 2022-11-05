@@ -23,7 +23,7 @@ class Tasks extends BaseController
 
     public function show($id)
     {
-        $task = $this->model->find($id);
+        $task = $this->getTaskOr404($id);
 
         return view('Tasks/show.php', ['task' => $task]);
     }
@@ -61,15 +61,16 @@ class Tasks extends BaseController
 
     public function edit($id)
     {
-        $task = $this->model->find($id);
+        $task = $this->getTaskOr404($id);
 
         return view('Tasks/edit.php', ['task' => $task]);
     }
 
     public function update($id)
     {
+        $task = $this->getTaskOr404($id);
+
         // https://codeigniter.com/user_guide/models/entities.html#filling-properties-quickly
-        $task = $this->model->find($id);
         $task->fill($this->request->getPost());
 
         // https://codeigniter.com/user_guide/models/entities.html#checking-for-changed-attributes
@@ -89,5 +90,17 @@ class Tasks extends BaseController
                 ->with('warning', 'Invalid data')
                 ->withInput();
         }
+    }
+
+    private function getTaskOr404($id)
+    {
+        $task = $this->model->find($id);
+
+        // https://codeigniter.com/user_guide/general/errors.html#pagenotfoundexception
+        if ($task === null) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException("找不到編號 $id 的任務ID");
+        }
+
+        return $task;
     }
 }
