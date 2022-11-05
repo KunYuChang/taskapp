@@ -10,8 +10,13 @@ class TaskModel extends \CodeIgniter\Model
     // 設定這個 Table 允許被寫入的欄位 (CI預設不給寫入)
     protected $allowedFields = ['description'];
 
+    // https://codeigniter.com/user_guide/models/entities.html
     protected $returnType = 'App\Entities\Task';
-//    protected $returnType = 'object';
+    // protected $returnType = 'object';
+
+    // https://codeigniter.com/user_guide/models/model.html#usetimestamps
+    // 自動寫入created_at, updated_at
+    protected $useTimestamps = true;
 
     protected $validationRules = [
         'description' => 'required'
