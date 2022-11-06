@@ -92,6 +92,24 @@ class Tasks extends BaseController
         }
     }
 
+    public function delete($id)
+    {
+        $task = $this->getTaskOr404($id);
+
+        // https://codeigniter4.github.io/userguide/incoming/incomingrequest.html#determining-request-type
+        if ($this->request->getMethod() === 'post')
+        {
+            $this->model->delete($id);
+
+            return redirect()->to('/tasks')
+                             ->with('info', 'Task deleted');
+        }
+
+        return view('Tasks/delete',[
+            'task' => $task
+        ]);
+    }
+
     private function getTaskOr404($id)
     {
         $task = $this->model->find($id);
