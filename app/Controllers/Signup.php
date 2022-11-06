@@ -5,7 +5,8 @@ namespace App\Controllers;
 use App\Entities\User;
 use App\Models\UserModel;
 
-class Signup extends BaseController {
+class Signup extends BaseController
+{
     public function new()
     {
         return view("Signup/new");
@@ -14,11 +15,20 @@ class Signup extends BaseController {
     public function create()
     {
         $user = new User($this->request->getPost());
-
         $model = new UserModel;
 
-        $model->insert($user);
+        if ($model->insert($user)) {
+            return redirect()->to("/signup/success");
+        } else {
+            return redirect()->back()
+                ->with('errors', $model->errors())
+                ->with('warning', 'Invalid data')
+                ->withInput();
+        }
+    }
 
-        echo "Signed up";
+    public function success()
+    {
+        return view('Signup/success');
     }
 }
