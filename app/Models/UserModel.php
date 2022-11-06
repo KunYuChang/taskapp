@@ -16,6 +16,24 @@ class UserModel extends \CodeIgniter\Model
     // https://codeigniter.com/user_guide/models/model.html#usetimestamps
     protected $useTimestamps = true;
 
+    // https://codeigniter.com/user_guide/libraries/validation.html#available-rules
+    protected $validationRules = [
+        'name' => 'required',
+        'email' => 'required|valid_email|is_unique[user.email]',
+        'password' => 'required|min_length[6]',
+        'password_confirmation' => 'required|matches[password]'
+    ];
+
+    protected $validationMessages = [
+        'email' => [
+            'is_unique' => '信箱已被註冊。'
+        ],
+        'password_confirmation' => [
+            'required' => '請輸入密碼!',
+            'matches' => '輸入的密碼不一致，請重新輸入。'
+        ]
+    ];
+
     // https://codeigniter.com/user_guide/models/model.html#model-events
     protected $beforeInsert = ['hashPassword'];
 
