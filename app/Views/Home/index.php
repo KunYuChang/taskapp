@@ -4,6 +4,6 @@
 
     <h1>主頁面</h1>
 
-    <a href="<?= site_url("signup/new") ?>">Sign up</a>
+    <a href="<?= site_url("/signup") ?>">Sign up</a>
 
 <?= $this->endSection() ?>
