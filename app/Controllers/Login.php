@@ -29,12 +29,19 @@ class Login extends BaseController
         }
 
         // https://www.php.net/manual/en/function.password-verify.php
-        if (password_verify($password, $user->password_hash)) {
-            echo "Login ok";
-        } else {
+        if (!password_verify($password, $user->password_hash)) {
+
             return redirect()->back()
                 ->withInput()
                 ->with('warning', 'Incorrect password');
         }
+
+        $session = session();
+        // 登入時重新產生session : prevent session fixation attacks
+        $session->regenerate();
+        $session->set('user_id', $user->id);
+
+        return redirect()->to("/")
+                         ->with("info", "Login successful");
     }
 }
