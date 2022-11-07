@@ -4,7 +4,7 @@
 
 <h1>Login</h1>
 
-<?= form_open("/signup/create") ?>
+<?= form_open("/login/create") ?>
 
 <div>
     <label for="email">email</label>
@@ -12,7 +12,7 @@
 </div>
 
 <div>
-    <label for="password">email</label>
+    <label for="password">password</label>
     <input type="password" name="password">
 </div>
 
