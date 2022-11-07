@@ -16,11 +16,6 @@ class Tasks extends BaseController
 
     public function index()
     {
-        if (! service('auth')->isLoggedIn()) {
-            return redirect()->to('/login')
-                             ->with('info', 'Please login first');
-        }
-
         $data = $this->model->findAll();
 
         return view("Tasks/index", ['tasks' => $data]);
@@ -79,10 +74,10 @@ class Tasks extends BaseController
         $task->fill($this->request->getPost());
 
         // https://codeigniter.com/user_guide/models/entities.html#checking-for-changed-attributes
-        if (! $task->hasChanged()) {
-            return  redirect()->back()
-                              ->with('warning', 'Nothing to update')
-                              ->withInput();
+        if (!$task->hasChanged()) {
+            return redirect()->back()
+                ->with('warning', 'Nothing to update')
+                ->withInput();
         }
 
         // https://codeigniter.com/user_guide/models/model.html#save
@@ -102,15 +97,14 @@ class Tasks extends BaseController
         $task = $this->getTaskOr404($id);
 
         // https://codeigniter4.github.io/userguide/incoming/incomingrequest.html#determining-request-type
-        if ($this->request->getMethod() === 'post')
-        {
+        if ($this->request->getMethod() === 'post') {
             $this->model->delete($id);
 
             return redirect()->to('/tasks')
-                             ->with('info', 'Task deleted');
+                ->with('info', 'Task deleted');
         }
 
-        return view('Tasks/delete',[
+        return view('Tasks/delete', [
             'task' => $task
         ]);
     }
