@@ -42,6 +42,21 @@ class Login extends BaseController
         $session->set('user_id', $user->id);
 
         return redirect()->to("/")
-                         ->with("info", "Login successful");
+            ->with("info", "Login successful");
+    }
+
+    public function delete()
+    {
+        session()->destroy();
+
+        // session destroy 之後 ,這邊將無法傳送 flash message
+        return redirect()->to('/login/showLogoutMessage');
+    }
+
+    // 因為 delete() session destroy, 因此我們透過新的請求, 啟用新的session 才可以傳送 flash message
+    public function showLogoutMessage()
+    {
+        return redirect()->to('/')
+            ->with('info', 'Logout successful');
     }
 }

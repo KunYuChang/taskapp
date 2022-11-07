@@ -168,15 +168,18 @@ class App extends BaseConfig
 
     /**
      * --------------------------------------------------------------------------
-     * Session Expiration
+     * Session Expiration 工作階段到期
      * --------------------------------------------------------------------------
      *
      * The number of SECONDS you want the session to last.
+     * 您希望工作階段持續的秒數。
      * Setting to 0 (zero) means expire when the browser is closed.
+     * 設置為 0（零）意味著當瀏覽器關閉時過期。
      *
      * @var int
      */
-    public $sessionExpiration = 7200;
+    // public $sessionExpiration = 7200; // CI 預設值
+    public $sessionExpiration = 0;
 
     /**
      * --------------------------------------------------------------------------
@@ -339,7 +342,7 @@ class App extends BaseConfig
      * You can use both an array or a comma-separated list of proxy addresses,
      * as well as specifying whole subnets. Here are a few examples:
      *
-     * Comma-separated:	'10.0.1.200,192.168.5.0/24'
+     * Comma-separated:    '10.0.1.200,192.168.5.0/24'
      * Array: ['10.0.1.200', '192.168.5.0/24']
      *
      * @var string|string[]
