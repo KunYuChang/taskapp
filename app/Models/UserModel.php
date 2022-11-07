@@ -47,4 +47,11 @@ class UserModel extends \CodeIgniter\Model
         }
         return $data;
     }
+
+    // https://codeigniter.com/user_guide/database/query_builder.html
+    public function findByEmail($email)
+    {
+        return $this->where('email', $email)
+                    ->first();
+    }
 }
