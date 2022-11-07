@@ -6,6 +6,9 @@ use App\Models\UserModel;
 
 class Authentication
 {
+    // 通過快取使用者記錄避免多次相同的資料庫查詢
+    private $user;
+
     public function login($email, $password)
     {
         $model = new UserModel;
@@ -40,8 +43,11 @@ class Authentication
             return null;
         }
 
-        $model = new UserModel;
+        if ($this->user === null) {
+            $model = new UserModel;
+            $this->user = $model->find(session()->get('user_id'));
+        }
 
-        return $model->find(session()->get('user_id'));
+        return $this->user;
     }
 }
