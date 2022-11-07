@@ -11,11 +11,9 @@ class GuestFilter implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
-        if (service('auth')->isLoggedIn()) {
+        if (!service('auth')->isLoggedIn()) {
 
-            return redirect()->to('/')
-                ->with('info', '登入中，無法註冊或登入!');
-
+            return redirect()->to('/');
         }
     }
 

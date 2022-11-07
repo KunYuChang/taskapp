@@ -6,7 +6,7 @@ use App\Entities\Task;
 
 class Tasks extends BaseController
 {
-    private $model;
+    private \App\Models\TaskModel $model;
 
     public function __construct()
     {
@@ -16,7 +16,10 @@ class Tasks extends BaseController
 
     public function index()
     {
-        $data = $this->model->findAll();
+        $auth = service('auth');
+        $user = $auth->getCurrentUser();
+//        dd($user);
+        $data = $this->model->getTasksByUserId($user->id);
 
         return view("Tasks/index", ['tasks' => $data]);
     }
@@ -41,7 +44,7 @@ class Tasks extends BaseController
         $task = new Task($this->request->getPost());
 
         if ($this->model->insert($task)) {
-            return redirect()->to("/tasks/show/{$model->insertID}")
+            return redirect()->to("/tasks/show/{$this->model->insertID}")
                 // Set a flash message
                 ->with('info', 'Task created successfully');
 
@@ -52,7 +55,7 @@ class Tasks extends BaseController
             // CI 會自動建立 session 來傳遞資料
             return redirect()->back()
                 // Set a flash message
-                ->with('errors', $model->errors())
+                ->with('errors', $this->model->errors())
                 // Set a flash message
                 ->with('warning', 'Invalid data')
                 ->withInput();

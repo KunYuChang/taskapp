@@ -27,4 +27,10 @@ class TaskModel extends \CodeIgniter\Model
             'required' => '請輸入任務描述!'
         ]
     ];
+
+    public function getTasksByUserId($id)
+    {
+        return $this->where('user_id', $id)
+                    ->findAll();
+    }
 }
