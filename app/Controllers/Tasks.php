@@ -114,7 +114,12 @@ class Tasks extends BaseController
 
     private function getTaskOr404($id)
     {
-        $task = $this->model->find($id);
+        $user = service('auth')->getCurrentUser();
+
+//        $task = $this->model->find($id);
+
+        // 找不到就是不能看
+        $task = $this->model->getTaskByUserId($id, $user->id);
 
         // https://codeigniter.com/user_guide/general/errors.html#pagenotfoundexception
         if ($task === null) {

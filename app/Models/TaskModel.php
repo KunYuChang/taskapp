@@ -31,6 +31,13 @@ class TaskModel extends \CodeIgniter\Model
     public function getTasksByUserId($id)
     {
         return $this->where('user_id', $id)
-                    ->findAll();
+            ->findAll();
+    }
+
+    public function getTaskByUserId($id, $user_id)
+    {
+        return $this->where('id', $id)
+            ->where('user_id', $user_id)
+            ->first();
     }
 }
