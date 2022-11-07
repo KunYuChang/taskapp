@@ -2,10 +2,12 @@
 
 namespace App\Entities;
 
-class User extends \CodeIgniter\Entity\Entity
+use CodeIgniter\Entity\Entity;
+
+class User extends Entity
 {
-    public function verifyPassword($password)
-    {
-        return password_verify($password, $this->password_hash);
-    }
+//    public function verifyPassword($password)
+//    {
+//        return password_verify($password, $this->password_hash);
+//    }
 }
