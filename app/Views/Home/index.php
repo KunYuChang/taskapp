@@ -6,12 +6,10 @@
     <a href="<?= site_url("/signup") ?>">Sign up</a>
 
 <?php // Log in the authenticated user using the session
-if (session()->has('user_id')): ?>
+if (current_user()): ?>
 
     <p>User is logged in</p>
-
     <p>Hello <?= esc(current_user()->name) ?></p>
-
     <a href="<?= site_url("/logout") ?>">👋登出</a>
 
 <?php else: ?>

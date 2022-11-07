@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Models\UserModel;
-
 class Login extends BaseController
 {
     public function new()
@@ -16,38 +14,22 @@ class Login extends BaseController
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
 
-        $model = new UserModel;
+        $auth = new \App\Libraries\Authentication;
 
-        // https://codeigniter.com/user_guide/database/query_builder.html
-        $user = $model->where('email', $email)
-            ->first();
-
-        if ($user === null) {
+        if ($auth->login($email, $password)) {
+            return redirect()->to("/")
+                ->with("info", "Login successful");
+        } else {
             return redirect()->back()
                 ->withInput()
-                ->with('warning', 'User not found');
+                ->with('warning', 'Invalid login');
         }
-
-        // https://www.php.net/manual/en/function.password-verify.php
-        if (!password_verify($password, $user->password_hash)) {
-
-            return redirect()->back()
-                ->withInput()
-                ->with('warning', 'Incorrect password');
-        }
-
-        $session = session();
-        // 登入時重新產生session : prevent session fixation attacks
-        $session->regenerate();
-        $session->set('user_id', $user->id);
-
-        return redirect()->to("/")
-            ->with("info", "Login successful");
     }
 
     public function delete()
     {
-        session()->destroy();
+        $auth = new \App\Libraries\Authentication;
+        $auth->logout();
 
         // session destroy 之後 ,這邊將無法傳送 flash message
         return redirect()->to('/login/showLogoutMessage');
