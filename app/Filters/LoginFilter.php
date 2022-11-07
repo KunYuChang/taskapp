@@ -12,6 +12,10 @@ class LoginFilter implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         if (!service('auth')->isLoggedIn()) {
+
+            // https://codeigniter.com/user_guide/helpers/url_helper.html#current_url
+            session()->set('redirect_url', current_url());
+
             return redirect()->to('/login')
                 ->with('info', '請先登入!');
         }
