@@ -41,7 +41,14 @@ class Tasks extends BaseController
 
     public function create()
     {
+        // 取得使用者傳送過來的資料
         $task = new Task($this->request->getPost());
+
+        // 取得使用者身份
+        $user = service('auth')->getCurrentUser();
+
+        // 資料加上身份
+        $task->user_id = $user->id;
 
         if ($this->model->insert($task)) {
             return redirect()->to("/tasks/show/{$this->model->insertID}")
@@ -72,6 +79,11 @@ class Tasks extends BaseController
     public function update($id)
     {
         $task = $this->getTaskOr404($id);
+
+        $post = $this->request->getPost();
+
+        // 更新資料時不更新使用者id
+        unset($post['user_id']);
 
         // https://codeigniter.com/user_guide/models/entities.html#filling-properties-quickly
         $task->fill($this->request->getPost());
