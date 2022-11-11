@@ -7,19 +7,17 @@ use App\Entities\Task;
 class Tasks extends BaseController
 {
     private \App\Models\TaskModel $model;
+    private $current_user;
 
     public function __construct()
     {
         $this->model = new \App\Models\TaskModel;
+        $this->current_user = service('auth')->getCurrentUser();
     }
-
 
     public function index()
     {
-        $auth = service('auth');
-        $user = $auth->getCurrentUser();
-//        dd($user);
-        $data = $this->model->getTasksByUserId($user->id);
+        $data = $this->model->getTasksByUserId($this->current_user->id);
 
         return view("Tasks/index", ['tasks' => $data]);
     }
@@ -44,11 +42,8 @@ class Tasks extends BaseController
         // 取得使用者傳送過來的資料
         $task = new Task($this->request->getPost());
 
-        // 取得使用者身份
-        $user = service('auth')->getCurrentUser();
-
         // 資料加上身份
-        $task->user_id = $user->id;
+        $task->user_id = $this->current_user->id;
 
         if ($this->model->insert($task)) {
             return redirect()->to("/tasks/show/{$this->model->insertID}")
@@ -126,12 +121,10 @@ class Tasks extends BaseController
 
     private function getTaskOr404($id)
     {
-        $user = service('auth')->getCurrentUser();
-
 //        $task = $this->model->find($id);
 
         // 找不到就是不能看
-        $task = $this->model->getTaskByUserId($id, $user->id);
+        $task = $this->model->getTaskByUserId($id, $this->current_user->id);
 
         // https://codeigniter.com/user_guide/general/errors.html#pagenotfoundexception
         if ($task === null) {
