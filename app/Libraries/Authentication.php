@@ -39,6 +39,7 @@ class Authentication
 
     public function getCurrentUser()
     {
+
         if (!$this->isLoggedIn()) {
             return null;
         }
