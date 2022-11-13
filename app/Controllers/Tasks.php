@@ -6,7 +6,7 @@ use App\Entities\Task;
 
 class Tasks extends BaseController
 {
-    private \App\Models\TaskModel $model;
+    private $model;
     private $current_user;
 
     public function __construct()
