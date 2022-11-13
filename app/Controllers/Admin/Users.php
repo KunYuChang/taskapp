@@ -22,4 +22,26 @@ class Users extends \App\Controllers\BaseController
             'pager' => $this->model->pager
         ]);
     }
+
+    public function show($id)
+    {
+        $user = $this->getUserOr404($id);
+
+        return view('Admin/Users/show.php', [
+            'user' => $user
+        ]);
+    }
+
+    private function getUserOr404($id)
+    {
+        $user = $this->model->where('id', $id)
+            ->first();
+
+        if ($user === null) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException("找不到編號 $id 的使用者");
+        }
+
+        return $user;
+    }
+
 }

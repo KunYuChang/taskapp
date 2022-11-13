@@ -22,7 +22,7 @@
             <tr>
                 <td>
                     <a href="<?= site_url("/admin/users/show/" . $user->id) ?>">
-                        <?= esc($task->name) ?>
+                        <?= esc($user->name) ?>
                     </a>
                 </td>
                 <td><?= esc($user->email) ?></td>
