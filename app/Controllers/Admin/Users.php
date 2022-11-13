@@ -117,6 +117,22 @@ class Users extends \App\Controllers\BaseController
         }
     }
 
+    public function delete($id)
+    {
+        $user = $this->getUserOr404($id);
+
+        // https://codeigniter4.github.io/userguide/incoming/incomingrequest.html#determining-request-type
+        if ($this->request->getMethod() === 'post') {
+            $this->model->delete($id);
+
+            return redirect()->to('/admin/users')
+                ->with('info', 'User deleted');
+        }
+
+        return view('Admin/Users/delete', [
+            'user' => $user
+        ]);
+    }
 
     private function getUserOr404($id)
     {
