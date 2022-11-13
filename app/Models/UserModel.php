@@ -37,11 +37,13 @@ class UserModel extends \CodeIgniter\Model
     // https://codeigniter.com/user_guide/models/model.html#model-events
     protected $beforeInsert = ['hashPassword'];
 
+    protected $beforeUpdate = ['hashPassword'];
+
     protected function hashPassword(array $data)
     {
-        if(isset($data['data']['password'])) {
+        if (isset($data['data']['password'])) {
             // https://www.php.net/manual/en/function.password-hash.php
-            $data['data']['password_hash'] = password_hash($data['data']['password'],PASSWORD_DEFAULT);
+            $data['data']['password_hash'] = password_hash($data['data']['password'], PASSWORD_DEFAULT);
 
             unset($data['data']['password']);
         }
@@ -52,6 +54,13 @@ class UserModel extends \CodeIgniter\Model
     public function findByEmail($email)
     {
         return $this->where('email', $email)
-                    ->first();
+            ->first();
+    }
+
+    public function disablePasswordValidation()
+    {
+        unset($this->validationRules['password']);
+        unset($this->validationRules['password_confirmation']);
     }
 }
+

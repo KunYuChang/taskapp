@@ -68,6 +68,56 @@ class Users extends \App\Controllers\BaseController
         }
     }
 
+    public function edit($id)
+    {
+        $user = $this->getUserOr404($id);
+
+        return view('Admin/Users/edit.php', [
+            'user' => $user
+        ]);
+    }
+
+    public function update($id)
+    {
+        $user = $this->getUserOr404($id);
+
+        $post = $this->request->getPost();
+
+        if (empty($post['password'])) {
+            $this->model->disablePasswordValidation();
+
+            unset($post['password']);
+            unset($post['password_confirmation']);
+        }
+
+        // https://codeigniter.com/user_guide/models/entities.html#filling-properties-quickly
+        $user->fill($post);
+
+        // https://codeigniter.com/user_guide/models/entities.html#checking-for-changed-attributes
+        if (!$user->hasChanged()) {
+            return redirect()->back()
+                ->with('warning', 'Nothing to update')
+                ->withInput();
+        }
+
+        // https://codeigniter.com/user_guide/models/model.html#save
+
+        if ($this->model->save($user)) {
+
+            return redirect()->to("/admin/users/show/$id")
+                ->with('info', 'User updated successfully');
+
+        } else {
+
+            return redirect()->back()
+                ->with('erros', $this->model->errors())
+                ->with('warning', 'Invalid data')
+                ->withInput();
+
+        }
+    }
+
+
     private function getUserOr404($id)
     {
         $user = $this->model->where('id', $id)
