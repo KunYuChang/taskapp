@@ -12,6 +12,12 @@
 if (current_user()): ?>
 
     <p>Hello <?= esc(current_user()->name) ?></p>
+
+    <!--  管理者連結  -->
+    <?php if (current_user()->is_admin): ?>
+        <a href="<?= site_url("/admin/users") ?>">使用者清單</a>
+    <?php endif; ?>
+
     <a href="<?= site_url("/tasks") ?>">🚩出任務囉</a>
     <a href="<?= site_url("/logout") ?>">👋登出</a>
 

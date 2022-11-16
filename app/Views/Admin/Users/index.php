@@ -13,6 +13,7 @@
         <tr>
             <td>姓名</td>
             <td>信箱</td>
+            <td>管理者</td>
             <td>創建時間</td>
         </tr>
         </thead>
@@ -26,6 +27,7 @@
                     </a>
                 </td>
                 <td><?= esc($user->email) ?></td>
+                <td><?= $user->is_admin ? 'yes' : 'no' ?></td>
                 <td><?= $user->created_at ?></td>
             </tr>
 
