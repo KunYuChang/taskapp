@@ -49,7 +49,7 @@ class Users extends \App\Controllers\BaseController
         // 取得使用者傳送過來的資料
         $user = new User($this->request->getPost());
 
-        if ($this->model->insert($user)) {
+        if ($this->model->protect(false)->insert($user)) {
             return redirect()->to("/admin/users/show/{$this->model->insertID}")
                 // Set a flash message
                 ->with('info', 'User created successfully');
@@ -83,6 +83,7 @@ class Users extends \App\Controllers\BaseController
 
         $post = $this->request->getPost();
 
+
         if (empty($post['password'])) {
             $this->model->disablePasswordValidation();
 
@@ -102,7 +103,9 @@ class Users extends \App\Controllers\BaseController
 
         // https://codeigniter.com/user_guide/models/model.html#save
 
-        if ($this->model->save($user)) {
+        if ($this->model
+            ->protect(false)
+            ->save($user)) {
 
             return redirect()->to("/admin/users/show/$id")
                 ->with('info', 'User updated successfully');
