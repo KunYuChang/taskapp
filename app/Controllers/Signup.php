@@ -17,6 +17,11 @@ class Signup extends BaseController
         $user = new User($this->request->getPost());
         $model = new UserModel;
 
+        $token = bin2hex(random_bytes(16));
+
+        // 密碼產生器 : https://randomkeygen.com/
+        $hash = hash_hmac('sha256', $token, $_ENV['HASH_SECRET_KEY']);
+
         if ($model->insert($user)) {
             return redirect()->to("/signup/success");
         } else {
