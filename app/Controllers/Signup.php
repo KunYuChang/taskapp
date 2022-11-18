@@ -22,6 +22,8 @@ class Signup extends BaseController
         // 密碼產生器 : https://randomkeygen.com/
         $hash = hash_hmac('sha256', $token, $_ENV['HASH_SECRET_KEY']);
 
+        $user->activation_hash = $hash;
+
         if ($model->insert($user)) {
             return redirect()->to("/signup/success");
         } else {
