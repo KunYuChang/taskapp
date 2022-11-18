@@ -30,7 +30,7 @@ class Login extends BaseController
 
             return redirect()->back()
                 ->withInput()
-                ->with('warning', 'Invalid login');
+                ->with('warning', '登入失敗');
 
         }
     }

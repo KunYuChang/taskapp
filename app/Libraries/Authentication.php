@@ -24,6 +24,11 @@ class Authentication
             return false;
         }
 
+        // 帳號是否激活
+        if (!$user->is_active) {
+            return false;
+        }
+
         $session = session();
         // 登入時重新產生session : prevent session fixation attacks
         $session->regenerate();
