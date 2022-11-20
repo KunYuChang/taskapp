@@ -82,5 +82,23 @@ class UserModel extends \CodeIgniter\Model
                 ->save($user);
         }
     }
+
+    public function getUserForPasswordReset($token)
+    {
+        $token = new Token($token);
+
+        $token_hash = $token->getHash();
+
+        $user = $this->where('reset_hash', $token_hash)
+            ->first();
+
+        if ($user) {
+            if ($user->reset_expires_at < date('Y-m-d H:i:s')) {
+                $user = null;
+            }
+        }
+
+        return $user;
+    }
 }
 

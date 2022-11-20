@@ -62,17 +62,19 @@ class Signup extends BaseController
         $email->setSubject('Account activation');
 
         $message = view('Signup/activation_email', [
-            'token' => $this->token
+            'token' => $user->token
         ]);
 
         $email->setMessage($message);
 
         $email->send();
 
-//        if ($email->send()) {
-//            echo "Message sent";
-//        } else {
-//            echo $email->printDebugger();
-//        }
+        if ($email->send()) {
+            echo "Message sent";
+        } else {
+            echo $email->printDebugger();
+        }
+
+        exit;
     }
 }
