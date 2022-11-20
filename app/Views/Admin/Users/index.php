@@ -2,7 +2,7 @@
 <?= $this->section("title") ?>Users<?= $this->endSection() ?>
 <?= $this->section("content") ?>
 
-<h1>Users</h1>
+<h1>任務App後台</h1>
 
 <a href="<?= site_url("/admin/users/new") ?>">新增使用者</a>
 
@@ -13,6 +13,7 @@
         <tr>
             <td>姓名</td>
             <td>信箱</td>
+            <td>激活</td>
             <td>管理者</td>
             <td>創建時間</td>
         </tr>
@@ -27,6 +28,7 @@
                     </a>
                 </td>
                 <td><?= esc($user->email) ?></td>
+                <td><?= $user->is_active ? 'yes' : 'no' ?></td>
                 <td><?= $user->is_admin ? 'yes' : 'no' ?></td>
                 <td><?= $user->created_at ?></td>
             </tr>

@@ -22,6 +22,20 @@
 </div>
 
 <div>
+    <label for="is_active">
+        <?php if ($user->id == current_user()->id): ?>
+            <input type="checkbox" checked disabled> 激活
+        <?php else: ?>
+            <!--  如果checkbox沒有被選擇, post 0, 否則會沒有東西被post過去  -->
+            <input type="hidden" name="is_active" value="0">
+            <input type="checkbox" id="is_active" name="is_admin" value="1"
+                   <?php if (old('is_active"', $user->is_active)): ?>checked<?php endif; ?>
+            > 激活
+        <?php endif; ?>
+    </label>
+</div>
+
+<div>
     <label for="is_admin">
         <?php if ($user->id == current_user()->id): ?>
             <input type="checkbox" checked disabled> 管理者

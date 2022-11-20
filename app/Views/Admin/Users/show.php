@@ -12,6 +12,13 @@
     <dt>信箱</dt>
     <dd><?= esc($user->email) ?></dd>
 
+    <dt>激活</dt>
+    <dd><?= $user->is_active ? 'yes' : 'no' ?></dd>
+
+    <dt>管理者</dt>
+    <dd><?= $user->is_admin ? 'yes' : 'no' ?></dd>
+
+
     <dt>Created at</dt>
     <dd><?= $user->created_at ?></dd>
 
