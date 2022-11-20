@@ -10,4 +10,10 @@ class User extends Entity
 //    {
 //        return password_verify($password, $this->password_hash);
 //    }
+
+    public function activate()
+    {
+        $this->is_active = true;
+        $this->activation_hash = null;
+    }
 }
