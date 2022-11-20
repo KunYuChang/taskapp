@@ -18,6 +18,8 @@
 
 <button>Login</button>
 
+<a href="<?= site_url("/password/forgot") ?>">Forgot password?</a>
+
 <?= form_close() ?>
 
 <?= $this->endSection() ?>

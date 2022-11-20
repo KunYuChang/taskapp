@@ -44,8 +44,7 @@ class Authentication
 
     public function getCurrentUser()
     {
-
-        if (!$this->session()->has('user_id')) {
+        if (!session()->has('user_id')) {
             return null;
         }
 
