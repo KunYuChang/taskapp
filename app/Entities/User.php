@@ -3,13 +3,23 @@
 namespace App\Entities;
 
 use CodeIgniter\Entity\Entity;
+use App\Libraries\Token;
 
 class User extends Entity
 {
-//    public function verifyPassword($password)
-//    {
-//        return password_verify($password, $this->password_hash);
-//    }
+    public function verifyPassword($password)
+    {
+        return password_verify($password, $this->password_hash);
+    }
+
+    public function startActivation()
+    {
+        $token = new Token;
+
+        $this->token = $token->getValue();
+
+        $this->activation_hash = $token->getHash();
+    }
 
     public function activate()
     {
