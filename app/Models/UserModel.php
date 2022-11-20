@@ -10,7 +10,7 @@ class UserModel extends \CodeIgniter\Model
     protected $table = 'user';
 
     // (2) 設定這個 Table 允許被寫入的欄位 (CI預設不給寫入)
-    protected $allowedFields = ['name', 'email', 'password', 'activation_hash'];
+    protected $allowedFields = ['name', 'email', 'password', 'activation_hash', 'reset_hash', 'reset_expires_at'];
 
     // (3) https://codeigniter.com/user_guide/models/entities.html
     protected $returnType = 'App\Entities\Task';
