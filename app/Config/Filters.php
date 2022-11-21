@@ -72,19 +72,27 @@ class Filters extends BaseConfig
      * @var array
      */
 
-    // ['tasks(/*)?'] = ['tasks/*', 'tasks']
+
+    /**
+     * 權限
+     * ['tasks(/*)?'] = ['tasks/*', 'tasks']
+     */
     public $filters = [
+        // 登入者過濾
         'login' => [
             'before' => [
                 'tasks(/*)?',
-                'admin/*'
+                'admin/*',
+                'profile/*'
             ]
         ],
+        // 管理者可用
         'admin' => [
             'before' => [
                 'admin/*'
             ]
         ],
+        // 未登入者可用
         'guest' => [
             'before' => [
                 'password/*'
