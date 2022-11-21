@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use SebastianBergmann\CodeCoverage\Report\PHP;
+
 class Profile extends BaseController
 {
     private $user;
@@ -20,6 +22,16 @@ class Profile extends BaseController
 
     public function edit()
     {
+        $session = session();
+
+        if (!$session->has('can_edit_profile_until')) {
+            return redirect()->to('/profile/authenticate');
+        }
+
+        if ($session->get('can_edit_profile_until') < time()) {
+            return redirect()->to('/profile/authenticate');
+        }
+
         return view('Profile/edit', [
             'user' => $this->user
         ]);
@@ -39,6 +51,8 @@ class Profile extends BaseController
         $model = new \App\Models\UserModel;
 
         if ($model->save($this->user)) {
+
+            session()->remove('can_edit_profile_until');
 
             return redirect()->to("/profile/show")
                 ->with('info', 'Details updated successfully');
@@ -81,6 +95,29 @@ class Profile extends BaseController
             return redirect()->back()
                 ->with('errors', $model->errors())
                 ->with('warning', 'Invalid data');
+        }
+    }
+
+    public function authenticate()
+    {
+        return view('Profile/authenticate');
+    }
+
+    public function processAuthenticate()
+    {
+        $current_passowrd = $this->request->getPost('password');
+        $verify = password_verify($current_passowrd, $this->user->password_hash);
+
+        if ($verify) {
+
+            // 有五分鐘時間可以修改資料
+            session()->set('can_edit_profile_until', time() + 300);
+
+            return redirect()->to('/profile/edit');
+        } else {
+
+            return redirect()->back()
+                ->with('warning', 'Invalid password');
         }
     }
 }
