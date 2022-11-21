@@ -29,7 +29,7 @@ class Profile extends BaseController
     {
         $this->user->fill($this->request->getPost());
 
-        if ( ! $this->user->hasChanged()) {
+        if (!$this->user->hasChanged()) {
 
             return redirect()->back()
                 ->with('warning', 'Nothing to update')
@@ -55,5 +55,32 @@ class Profile extends BaseController
     public function editPassword()
     {
         return view('Profile/edit_password');
+    }
+
+    public function updatePassword()
+    {
+        $current_passowrd = $this->request->getPost('current_password');
+
+        $verify = password_verify($current_passowrd, $this->user->password_hash);
+
+        if (!$verify) {
+            return redirect()->back()
+                ->with('warning', 'Invalid current password');
+        }
+
+        $this->user->fill($this->request->getPost());
+
+        $model = new \App\Models\UserModel;
+
+        if ($model->save($this->user)) {
+
+            return redirect()->to("/profile/show")
+                ->with('info', 'Password updated successfully');
+        } else {
+
+            return redirect()->back()
+                ->with('errors', $model->errors())
+                ->with('warning', 'Invalid data');
+        }
     }
 }

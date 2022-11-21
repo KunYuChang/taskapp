@@ -30,6 +30,10 @@ class UserModel extends \CodeIgniter\Model
         'email' => [
             'is_unique' => '信箱已被註冊。'
         ],
+        'password' => [
+            'required' => '請輸入密碼!',
+            'min_length' => '密碼長度不足'
+        ],
         'password_confirmation' => [
             'required' => '請輸入密碼!',
             'matches' => '輸入的密碼不一致，請重新輸入。'
