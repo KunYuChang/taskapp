@@ -29,7 +29,8 @@ class Profile extends BaseController
     {
         $this->user->fill($this->request->getPost());
 
-        if (!$this->user->hasChanged()) {
+        if ( ! $this->user->hasChanged()) {
+
             return redirect()->back()
                 ->with('warning', 'Nothing to update')
                 ->withInput();

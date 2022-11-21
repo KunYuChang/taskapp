@@ -1,31 +1,34 @@
-<?= $this->extend("layouts/default") ?>
-<?= $this->section("title") ?>Edit profile<?= $this->endSection() ?>
-<?= $this->section("content") ?>
+<?= $this->extend('layouts/default') ?>
 
-<h1>編輯個人資料</h1>
+<?= $this->section('title') ?>Edit profile<?= $this->endSection() ?>
 
-<!--error message-->
+<?= $this->section('content') ?>
+
+    <h1>Edit profile</h1>
+
 <?php if (session()->has('errors')): ?>
     <ul>
-        <?php foreach (session('errors') as $error): ?>
+        <?php foreach(session('errors') as $error): ?>
             <li><?= $error ?></li>
         <?php endforeach; ?>
     </ul>
-<?php endif; ?>
+<?php endif ?>
 
-<!--form START-->
-<?= form_open("/profile/update/") ?>
-<div>
-    <label for="name">Name</label>
-    <input type="text" name="name" id="name" value="<?= old('name', esc($user->name)) ?>">
-</div>
-<div>
-    <label for="email">email</label>
-    <input type="text" name="email" id="email" value="<?= old('email', esc($user->email)) ?>">
-</div>
-<button>Save</button>
-<a href="<?= site_url("/tasks/show/".$task->id) ?>">Cancel</a>
-<?= form_close() ?>
-<!--form END-->
+<?= form_open("/profile/update") ?>
+
+    <div>
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" value="<?= old('name', esc($user->name)) ?>">
+    </div>
+
+    <div>
+        <label for="email">email</label>
+        <input type="text" name="email" id="email" value="<?= old('email', esc($user->email)) ?>">
+    </div>
+
+    <button>Save</button>
+    <a href="<?= site_url("/profile/show") ?>">Cancel</a>
+
+    </form>
 
 <?= $this->endSection() ?>
