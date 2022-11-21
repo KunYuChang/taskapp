@@ -51,4 +51,9 @@ class Profile extends BaseController
                 ->withInput();
         }
     }
+
+    public function editPassword()
+    {
+        return view('Profile/edit_password');
+    }
 }

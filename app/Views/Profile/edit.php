@@ -27,6 +27,7 @@
     </div>
 
     <button>Save</button>
+
     <a href="<?= site_url("/profile/show") ?>">Cancel</a>
 
     </form>
