@@ -83,7 +83,8 @@ class Filters extends BaseConfig
             'before' => [
                 'tasks(/*)?',
                 'admin/*',
-                'profile/*'
+                'profile/*',
+                'Profileimage/*'
             ]
         ],
         // 管理者可用
