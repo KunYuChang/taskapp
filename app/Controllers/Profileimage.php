@@ -13,7 +13,7 @@ class Profileimage extends BaseController
     {
         $file = $this->request->getFile('image');
 
-        if ( ! $file->isValid()) {
+        if (!$file->isValid()) {
 
             $error_code = $file->getError();
 
@@ -36,7 +36,7 @@ class Profileimage extends BaseController
 
         $type = $file->getMimeType();
 
-        if ( ! in_array($type, ['image/png', 'image/jpeg'])) {
+        if (!in_array($type, ['image/png', 'image/jpeg'])) {
 
             return redirect()->back()
                 ->with('warning', 'Invalid file format (PNG or JPEG only)');
@@ -45,15 +45,25 @@ class Profileimage extends BaseController
         // echo $file->getClientName();
         $path = $file->store('profile_images');
 
-        $path = WRITEPATH. 'uploads/' . $path;
+        $path = WRITEPATH . 'uploads/' . $path;
 
         // CI 提供的內建功能(調整和剪裁上傳的圖片)
         service('image')
             ->withFile($path)
-            ->fit(200,200, 'center')
+            ->fit(200, 200, 'center')
             ->save($path);
 
-        dd($path);
+        $user = service('auth')->getCurrentUser();
+
+        $user->profile_image = $file->getName();
+
+        $model = new \App\Models\UserModel;
+
+        $model->protect(false)
+            ->save($user);
+
+        return redirect()->to("/profile/show")
+            ->with('info','Image uploaded successfully');
     }
 }
 
