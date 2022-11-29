@@ -28,11 +28,11 @@ class Profileimage extends BaseController
 
         $size = $file->getSizeByUnit('mb');
 
-        if ($size > 2) {
-
-            return redirect()->back()
-                ->with('warning', 'File too large (max 2MB)');
-        }
+//        if ($size > 2) {
+//
+//            return redirect()->back()
+//                ->with('warning', 'File too large (max 2MB)');
+//        }
 
         $type = $file->getMimeType();
 
@@ -44,6 +44,14 @@ class Profileimage extends BaseController
 
         // echo $file->getClientName();
         $path = $file->store('profile_images');
+
+        $path = WRITEPATH. 'uploads/' . $path;
+
+        // CI 提供的內建功能(調整和剪裁上傳的圖片)
+        service('image')
+            ->withFile($path)
+            ->fit(200,200, 'center')
+            ->save($path);
 
         dd($path);
     }
