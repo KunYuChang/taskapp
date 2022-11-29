@@ -120,4 +120,23 @@ class Profile extends BaseController
                 ->with('warning', 'Invalid password');
         }
     }
+
+    public function image()
+    {
+        if ($this->user->profile_image) {
+            $path = WRITEPATH. 'uploads/profile_images/' . $this->user->profile_image;
+
+            // https://www.php.net/manual/en/class.finfo.php
+            $finfo = new \finfo(FILEINFO_MIME);
+
+            $type = $finfo->file($path);
+
+            header("Content-Type: $type");
+            header("Content-Length: ". filesize($path));
+
+            // https://www.php.net/manual/en/function.readfile.php
+            readfile($path);
+            exit;
+        }
+    }
 }
