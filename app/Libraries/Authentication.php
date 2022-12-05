@@ -29,19 +29,25 @@ class Authentication
             return false;
         }
 
-        $session = session();
-        $session->regenerate(); // 保護 session fixation
-        $session->set('user_id', $user->id);
+        $this->logInUser($user);
 
-        if($remember_me) {
+        if ($remember_me) {
             $this->rememberLogin($user->id);
         }
 
         return true;
     }
 
+    private function logInUser($user)
+    {
+        $session = session();
+        $session->regenerate(); // 保護 session fixation
+        $session->set('user_id', $user->id);
+    }
+
     // 記住登入者
-    private function rememberLogin($user_id) {
+    private function rememberLogin($user_id)
+    {
         $model = new \App\Models\RememberedLoginModel;
 
         [$token, $expiry] = $model->rememberUserLogin($user_id);
@@ -56,20 +62,25 @@ class Authentication
         session()->destroy();
     }
 
-    public function getCurrentUser()
+    private function getUserFromSession()
     {
         if (!session()->has('user_id')) {
             return null;
         }
 
+        $model = new UserModel;
+
+        $user = $model->find(session()->get('user_id'));
+
+        if ($user && $user->is_active) {
+            return $user;
+        }
+    }
+
+    public function getCurrentUser()
+    {
         if ($this->user === null) {
-            $model = new UserModel;
-
-            $user = $model->find(session()->get('user_id'));
-
-            if ($user && $user->is_active) {
-                $this->user = $user;
-            }
+            $this->user = $this->getUserFromSession();
         }
 
         return $this->user;
