@@ -16,6 +16,12 @@
     <input type="password" name="password">
 </div>
 
+<div>
+    <input type="checkbox" name="remember_me" id="remember_me"
+        <?php if(old('remember_me')):?>checked<?php endif; ?> >
+    <label for="remember_me">remember_me</label>
+</div>
+
 <button>Login</button>
 
 <a href="<?= site_url("/password/forgot") ?>">Forgot password?</a>

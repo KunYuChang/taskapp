@@ -14,6 +14,9 @@ class Login extends BaseController
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
 
+        // on / null -> true / false
+        $remember_me = (bool)$this->request->getPost('remember_mr');
+
         // https://codeigniter.com/user_guide/concepts/services.html
         $auth = service('auth');
 
