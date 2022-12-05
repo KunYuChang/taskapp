@@ -22,6 +22,7 @@ class Token
 
     public function getHash()
     {
+        // 訊息鑑別碼(Message Authentication Code)
         return hash_hmac('sha256', $this->token, $_ENV['HASH_SECRET_KEY']);
     }
 }

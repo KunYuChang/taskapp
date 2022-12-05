@@ -9,7 +9,7 @@ class Authentication
     // 通過快取使用者記錄避免多次相同的資料庫查詢
     private $user;
 
-    public function login($email, $password)
+    public function login($email, $password, $remember_me)
     {
         $model = new UserModel;
 
@@ -30,11 +30,25 @@ class Authentication
         }
 
         $session = session();
-        // 登入時重新產生session : prevent session fixation attacks
-        $session->regenerate();
+        $session->regenerate(); // 保護 session fixation
         $session->set('user_id', $user->id);
 
+        if($remember_me) {
+            $this->rememberLogin($user->id);
+        }
+
         return true;
+    }
+
+    // 記住登入者
+    private function rememberLogin($user_id) {
+        $model = new \App\Models\RememberedLoginModel;
+
+        [$token, $expiry] = $model->rememberUserLogin($user_id);
+
+        $response = service('response');
+
+        $response->setCookie('remember_me', $token, $expiry);
     }
 
     public function logout()

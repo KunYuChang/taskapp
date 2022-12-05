@@ -15,19 +15,20 @@ class Login extends BaseController
         $password = $this->request->getPost('password');
 
         // on / null -> true / false
-        $remember_me = (bool)$this->request->getPost('remember_mr');
+        $remember_me = (bool)$this->request->getPost('remember_me');
 
         // https://codeigniter.com/user_guide/concepts/services.html
         $auth = service('auth');
 
-        if ($auth->login($email, $password)) {
+        if ($auth->login($email, $password, $remember_me)) {
 
             $redirect_url = session('redirect_url') ?? '/';
 
             unset($_SESSION['redirect_url']);
 
             return redirect()->to($redirect_url)
-                ->with("info", "Login successful");
+                ->with("info", "Login successful")
+                ->withCookies();
 
         } else {
 
